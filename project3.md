@@ -33,7 +33,7 @@ What does it contain?
     - voice actors??\
     - reviews
 
-### Backend
+### Backend 
   [ ] CRUD anime - admin\
   [ ] DELETE reviews - admin\
   [ ] READ anime - user\
