@@ -40,12 +40,13 @@ router.post("/signup", (req, res, next) => {
         res.status(400).json({ message: "User already exists." });
         return;
       }
-
+      
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashedPassword = bcrypt.hashSync(password, salt);
 
       return User.create({ email, password: hashedPassword, userName });
     })
+
     .then((createdUser) => {
       const { email, userName, _id } = createdUser;
 
