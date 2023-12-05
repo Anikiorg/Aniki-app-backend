@@ -34,7 +34,7 @@ What does it contain?
     - reviews
 
 ### Backend 
-  [ ] CRUD anime - admin\
+  [ ] CRUD anime - admin\ 
   [ ] DELETE reviews - admin\
   [ ] READ anime - user\
   [ ] CRUD reviews - user\
