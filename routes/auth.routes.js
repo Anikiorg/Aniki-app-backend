@@ -111,13 +111,4 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
-router.delete("/profile/:userId", (req, res, next) => {
-  const { userId } = req.body._id
-  User.findByIdAndDelete({userId})
-  .then((response) => {
-    res.status().json({message: "Account succesfully deleted"})
-  })
-  .catch((err) => next(err))
-})
-
 module.exports = router;
