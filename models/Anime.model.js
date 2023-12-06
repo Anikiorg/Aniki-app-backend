@@ -6,6 +6,7 @@ const animeSchema = new Schema ({
         nameJP: {type: String, required: true},
         nameEN: {type: String, required: true}
     },
+    description: {type: String, required: true},
     imageURL: {type: String, default: ""}, //default img??
     episodes: {type: Number, default: "TBA"},
     genre: {type: [String], required: true}, // enum: [...]?
@@ -20,7 +21,7 @@ const animeSchema = new Schema ({
     ageRating: {type: String, default: "TBD"},
     reviews: [
         {
-            author: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+            author: {type: Number}/* {type: mongoose.Schema.Types.ObjectId, ref: "User"} */,
             content: {type: String, required: true}
         }
     ]
