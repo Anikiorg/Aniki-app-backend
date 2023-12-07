@@ -24,7 +24,22 @@ const userSchema = new Schema(
       enum: ["standard", "admin"], 
       default: "standard" 
     },
-    favouritesList: [Object]
+    favoritesList: [{
+      type: Schema.Types.ObjectId,
+      ref: "Anime"
+    }],
+    completedList: [{
+      type: Schema.Types.ObjectId,
+      ref: "Anime"
+    }],
+    currentlyWatchingList: [{
+      type: Schema.Types.ObjectId,
+      ref: "Anime"
+    }],
+    planToWatchList: [{
+      type: Schema.Types.ObjectId,
+      ref: "Anime"
+    }]
   },
   {
     timestamps: true,
