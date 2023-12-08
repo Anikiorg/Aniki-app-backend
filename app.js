@@ -21,6 +21,9 @@ app.use("/api", indexRoutes);
 const animeRoutes = require("./routes/anime.routes")
 app.use("/api", animeRoutes)
 
+const mangaRoutes = require("./routes/manga.routes")
+app.use("/api", mangaRoutes)
+
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
