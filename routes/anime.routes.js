@@ -30,13 +30,22 @@ router.get("/animes/:animeId", (req, res, next) => {
 
 router.put("/animes/:animeId", (req, res, next) => {
     const animeId = req.params.animeId
-    
+   /* const id = req.body.id
+    if (req.body.reviewObject.content) {
+        Anime.findByIdAndUpdate({id}, {$push: { reviews: req.body.reviewObject}})
+        .then((response)=> {
+            console.log("Anime review added")
+        })
+        .catch((err)=> err)
+    }*/
+
     Anime.findByIdAndUpdate(animeId, req.body, {new: true})
     .then(() => {
         res.json()
     })
     .catch((err) => next(err))
 })
+
 
 router.delete("/animes/:animeId", (req, res, next) => {
     const animeId = req.params.animeId

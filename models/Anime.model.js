@@ -21,7 +21,7 @@ const animeSchema = new Schema ({
     ageRating: {type: String, default: "TBD"},
     reviews: [
         {
-            author: {type: Number}/* {type: mongoose.Schema.Types.ObjectId, ref: "User"} */,
+            author: {type: String},
             content: {type: String, required: true}
         }
     ]
