@@ -12,48 +12,47 @@ router.get("/users", (req, res, next) => {
 
 router.put("/users/:userName", (req, res, next) => {
   const userName = req.params.userName;
-  const requestBody = req.body;
-  console.log(requestBody);
-  console.log(userName);
-  if (requestBody.listType == "favorites") {
+switch (req.body.listType) {
+  case "favorites":
     User.findOneAndUpdate(
       { userName },
-      { $push: { favoritesList: requestBody.id } }
+      { $push: { favoritesList: req.body.id } }
     )
       .then((userFromDB) => {
         res.json(userFromDB);
       })
       .catch((err) => next(err));
-  }
-  if (requestBody.listType == "completed") {
+    break
+  case "completed":
     User.findOneAndUpdate(
       { userName },
-      { $push: { completedList: requestBody.id } }
+      { $push: { completedList: req.body.id } }
     )
       .then((userFromDB) => {
         res.json(userFromDB);
       })
       .catch((err) => next(err));
-  }
-  if (requestBody.listType == "currently watching") {
-    User.findOneAndUpdate(
-      { userName },
-      { $push: { currentlyWatchingList: requestBody.id } }
-    )
-      .then((userFromDB) => {
-        res.json(userFromDB);
-      })
-      .catch((err) => next(err));
-  }
-  if (requestBody.listType == "plan to watch") {
-    User.findOneAndUpdate(
-      { userName },
-      { $push: { planToWatchList: requestBody.id } }
-    )
-      .then((userFromDB) => {
-        res.json(userFromDB);
-      })
-      .catch((err) => next(err));
+      break
+
+    case "currently watching":
+      User.findOneAndUpdate(
+        { userName },
+        { $push: { currentlyWatchingList: req.body.id } }
+      )
+        .then((userFromDB) => {
+          res.json(userFromDB);
+        })
+        .catch((err) => next(err));
+        break
+    case "plan to watch":
+      User.findOneAndUpdate(
+        { userName },
+        { $push: { planToWatchList: req.body.id } }
+      )
+        .then((userFromDB) => {
+          res.json(userFromDB);
+        })
+        .catch((err) => next(err));
   }
 });
 
@@ -75,19 +74,62 @@ router.get("/users/:userName", (req, res, next) => {
     });
 });
 
-router.delete("/users/:userName", (req, res, next) => {
-  /*const userName = req.params.userName;
-  const requestBody = req.body;
-  if (requestBody.case == "favorites") {
-    User.findOneAndUpdate({userName}, { $splice } )
-    .then(() => {
-    })
-    .catch((err) => next(err));
-  }
+router.put("/users/:userName/reviews", (req, res, next) => {
+  const userName = req.params.userName;
   
+switch(req.body.case) {
+  case "favorites":
+    User.findOneAndUpdate({userName} , { $pull: {favoritesList: req.body.animeId} }, {new:true} )
+    .then((response) => {
+      console.log(response)
+      res.json(response)
+        })
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    }
+      );
+    break
+  case "planToWatch":
+    User.findOneAndUpdate({userName} , { $pull: {planToWatchList: req.body.animeId} }, {new:true} )
+    .then((response) => {
+      console.log(response)
+      res.json(response)
+        })
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    }
+      );
+    break
+  case "currentlyWatching":
+    User.findOneAndUpdate({userName} , { $pull: {currentlyWatchingList: req.body.animeId} }, {new:true} )
+    .then((response) => {
+      console.log(response)
+      res.json(response)
+        })
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    }
+      );
+    break
+  case "completed":
+    User.findOneAndUpdate({userName} , { $pull: {completedList: req.body.animeId} }, {new:true} )
+    .then((response) => {
+      console.log(response)
+      res.json(response)
+        })
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    }
+      );
+      
+      default:
+      break;
+}
   
-  
-  */
 }
 )
 

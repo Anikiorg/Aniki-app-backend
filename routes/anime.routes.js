@@ -39,17 +39,6 @@ router.put("/animes/:animeId", (req, res, next) => {
         .catch((err)=> err)
     }
 
-
-
-
-
-
-
-
-
-
-
-
     Anime.findByIdAndUpdate(animeId, req.body, {new: true})
     .then(() => {
         res.json()
