@@ -9,7 +9,11 @@ const animeSchema = new Schema ({
     description: {type: String, required: true},
     imageURL: {type: String, default: ""}, //default img??
     episodes: {type: Number, default: "TBA"},
-    genre: {type: [String], required: true}, // enum: [...]?
+    genre: {
+        type: [String],
+        enum: ["Action", "Adventure","Comedy","Drama","Fantasy","Horror","Mystery","Romance","Sci-Fi","Slice of Life","Sports","Supernatural","Suspense", "Gore"] ,
+        required: true
+    },
     status: {
         type: String,
         required: true,
