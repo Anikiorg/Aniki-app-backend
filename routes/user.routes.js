@@ -75,4 +75,20 @@ router.get("/users/:userName", (req, res, next) => {
     });
 });
 
+router.delete("/users/:userName", (req, res, next) => {
+  /*const userName = req.params.userName;
+  const requestBody = req.body;
+  if (requestBody.case == "favorites") {
+    User.findOneAndUpdate({userName}, { $splice } )
+    .then(() => {
+    })
+    .catch((err) => next(err));
+  }
+  
+  
+  
+  */
+}
+)
+
 module.exports = router;
