@@ -105,3 +105,12 @@ Anime
     }]
 
 
+
+
+
+1. finish admin front and back
+2. do auth front and back for reviews
+3. render only if it's admin FRONTEND
+4. EDIT / DELETE reviews
+5. manga lists
+CSS
