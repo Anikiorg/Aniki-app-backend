@@ -29,7 +29,7 @@ router.get("/animes/:animeId", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-router.put("/animes/:animeId", (req, res, next) => {
+router.put("/animes/:animeId", isAdmin, (req, res, next) => {
   const animeId = req.params.animeId;
   console.log("req.body -->", req.body.reviewObject);
   if (req.body.reviewObject) {
@@ -49,7 +49,7 @@ router.put("/animes/:animeId", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-router.delete("/animes/:animeId",  (req, res, next) => {
+router.delete("/animes/:animeId", isAdmin, (req, res, next) => {
   const animeId = req.params.animeId;
 
   Anime.findByIdAndDelete(animeId)
