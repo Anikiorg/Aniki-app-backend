@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Anime = require("../models/Anime.model");
-const isAdmin = require ("../middleware/protected.resources")
+const isAdmin = require ("../middleware/protected.resources");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 router.get("/animes", (req, res, next) => {
   Anime.find()
@@ -29,24 +30,28 @@ router.get("/animes/:animeId", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-router.put("/animes/:animeId", isAdmin, (req, res, next) => {
+router.put("/animes/:animeId", isAuthenticated, (req, res, next) => {
   const animeId = req.params.animeId;
-  console.log("req.body -->", req.body.reviewObject);
-  if (req.body.reviewObject) {
+  console.log("req.body -->", req.body.content);
+  console.log(req.payload);
+  if (req.body.content) {
+    console.log('after if')
     Anime.findByIdAndUpdate(animeId, {
-      $push: { reviews: req.body.reviewObject },
-    })
-      .then(() => {
-        console.log("Anime review added");
+      $push: { reviews: {user: req.payload._id, content: req.body.content} }
+    }, {new:true})
+      .then((response) => {
+        console.log("Anime review added", response);
+        res.json()
       })
-      .catch((err) => err);
+      .catch((err) => {
+        console.log('couldn update', err)});
   }
 
-  Anime.findByIdAndUpdate(animeId, req.body, { new: true })
+/*   Anime.findByIdAndUpdate(animeId, req.body, { new: true })
     .then(() => {
       res.json();
     })
-    .catch((err) => next(err));
+    .catch((err) => next(err)); */
 });
 
 router.delete("/animes/:animeId", isAdmin, (req, res, next) => {
