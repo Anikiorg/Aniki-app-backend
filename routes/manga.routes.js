@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Manga = require("../models/Manga.model")
+const isAdmin = require ("../middleware/protected.resources")
 
 router.get("/manga", (req, res, next) => {
     Manga.find()
@@ -10,7 +11,7 @@ router.get("/manga", (req, res, next) => {
     .catch((err) => next(err))
 })
 
-router.post("/manga", (req, res, next) => {
+router.post("/manga", isAdmin, (req, res, next) => {
     Manga.create(req.body)
     .then((createdManga) => {
         res.json(createdManga)
@@ -28,7 +29,7 @@ router.get("/manga/:mangaId", (req, res, next) => {
     .catch((err) => next(err))
 })
 
-router.put("/manga/:mangaId", (req, res, next) => {
+router.put("/manga/:mangaId", isAdmin, (req, res, next) => {
     const mangaId = req.params.mangaId
     
     Manga.findByIdAndUpdate(mangaId, req.body, {new: true})
@@ -38,7 +39,7 @@ router.put("/manga/:mangaId", (req, res, next) => {
     .catch((err) => next(err))
 })
 
-router.delete("/manga/:mangaId", (req, res, next) => {
+router.delete("/manga/:mangaId",isAdmin, (req, res, next) => {
     const mangaId = req.params.mangaId
 
     Manga.findByIdAndDelete(mangaId)

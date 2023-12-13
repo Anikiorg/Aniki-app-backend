@@ -1,6 +1,7 @@
 const User = require("../models/User.model");
 const express = require("express");
 const router = express.Router();
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 router.get("/users", (req, res, next) => {
   User.find()
@@ -10,7 +11,7 @@ router.get("/users", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-router.put("/users/:userName", (req, res, next) => {
+router.put("/users/:userName/push", isAuthenticated, (req, res, next) => {
   const userName = req.params.userName;
 switch (req.body.listType) {
   case "favorites":
@@ -58,7 +59,6 @@ switch (req.body.listType) {
 
 router.get("/users/:userName", (req, res, next) => {
   const userName = req.params.userName;
-  console.log(":username route 1");
   User.find({ userName })
     .populate("favoritesList")
     .populate("currentlyWatchingList")
@@ -66,15 +66,13 @@ router.get("/users/:userName", (req, res, next) => {
     .populate("planToWatchList")
     .then((response) => {
       res.json(response);
-      console.log(":username route 2");
     })
     .catch((err) => {
-      console.log(":username route 3");
       return next(err);
     });
 });
 
-router.put("/users/:userName/reviews", (req, res, next) => {
+router.put("/users/:userName/pull", isAuthenticated, (req, res, next) => {
   const userName = req.params.userName;
   
 switch(req.body.case) {

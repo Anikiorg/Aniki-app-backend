@@ -17,7 +17,7 @@ const mangaSchema = new Schema ({
     status: {
         type: String,
         required: true,
-        enum: ["Publishing", "Finished", "Upcoming"],
+        enum: ["Publishing", "Finished publishing", "Upcoming"],
     },
     published: {type: String, default: "TBA"},
     authors: {type: [String], required: true},
@@ -25,7 +25,7 @@ const mangaSchema = new Schema ({
     ageRating: {type: String, default: "TBD"},
     reviews: [
         {
-            author: {type: Number}/* {type: mongoose.Schema.Types.ObjectId, ref: "User"} */,
+            author: { type: Schema.Types.ObjectId, ref: "User" },
             content: {type: String, required: true}
         }
     ]

@@ -10,9 +10,7 @@ const isAdmin = async function(req, res, next) {
 /*      const { animeId } = req.params;
       const anime = await Anime.findById(animeId);*/
       const jwt = getTokenFromHeaders(req)
-      console.log(jwt)
       const data = parseJwt(jwt)
-      console.log(data)
       const typeOfUser = data.typeOfUser
 /*
       if (!anime) {

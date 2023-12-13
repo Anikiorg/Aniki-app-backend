@@ -108,7 +108,7 @@ Anime
 
 
 
-1. finish admin front and back
+1. finish admin front and back done
 2. do auth front and back for reviews
 3. render only if it's admin FRONTEND
 4. EDIT / DELETE reviews
