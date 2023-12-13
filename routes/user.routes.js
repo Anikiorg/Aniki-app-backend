@@ -63,10 +63,10 @@ switch (req.body.listType) {
       .catch((err) => next(err));
       break
 
-    case "currently watching":
+    case "currentlyWatching":
       User.findOneAndUpdate(
         { userName },
-        { $push: { "animeLists.currentlyWatching": req.body.id } }
+        { $push: { "animeLists.watching": req.body.id } }
       )
         .then((userFromDB) => {
           res.json(userFromDB);
