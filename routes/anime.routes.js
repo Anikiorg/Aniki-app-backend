@@ -47,11 +47,6 @@ router.put("/animes/:animeId", isAuthenticated, (req, res, next) => {
         console.log('couldn update', err)});
   }
 
-/*   Anime.findByIdAndUpdate(animeId, req.body, { new: true })
-    .then(() => {
-      res.json();
-    })
-    .catch((err) => next(err)); */
 });
 
 router.delete("/animes/:animeId", isAdmin, (req, res, next) => {

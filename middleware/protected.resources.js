@@ -1,5 +1,4 @@
 const Anime = require ("../models/Anime.model")
-//​const {getTokenFromHeaders} = require("./jwt/middleware")
 
 function parseJwt (token) {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
@@ -7,8 +6,7 @@ function parseJwt (token) {
 
 const isAdmin = async function(req, res, next) {
     try {
-/*      const { animeId } = req.params;
-      const anime = await Anime.findById(animeId);*/
+
       const jwt = getTokenFromHeaders(req)
       const data = parseJwt(jwt)
       const typeOfUser = data.typeOfUser
