@@ -36,7 +36,7 @@ router.get("/users/:userName", (req, res, next) => {
 
 
 
-router.put("/users/:userName/push", isAuthenticated, (req, res, next) => {
+router.put("/users/:userName/animeadd", isAuthenticated, (req, res, next) => {
   const userName = req.params.userName;
 switch (req.body.listType) {
   case "favorites":
@@ -86,7 +86,7 @@ switch (req.body.listType) {
 });
 
 
-router.put("/users/:userName/pull", isAuthenticated, (req, res, next) => {
+router.put("/users/:userName/animeremove", isAuthenticated, (req, res, next) => {
   const userName = req.params.userName;
   
 switch(req.body.case) {
@@ -145,4 +145,113 @@ switch(req.body.case) {
 }
 )
 
+
+router.put("/users/:userName/mangaadd", isAuthenticated, (req, res, next) => {
+  const userName = req.params.userName;
+switch (req.body.listType) {
+  case "favorites":
+    User.findOneAndUpdate(
+      { userName },
+      { $push: {"mangaLists.favorites": req.body.id } }
+    )
+      .then((userFromDB) => {
+        console.log('adding favorite ', userFromDB)
+        res.json(userFromDB);
+      })
+      .catch((err) => {
+        console.log('error adding fav ', err)
+        next(err)});
+    break
+  case "completed":
+    User.findOneAndUpdate(
+      { userName },
+      { $push: { "mangaLists.completed": req.body.id } }
+    )
+      .then((userFromDB) => {
+        res.json(userFromDB);
+      })
+      .catch((err) => next(err));
+      break
+
+    case "currently reading":
+      User.findOneAndUpdate(
+        { userName },
+        { $push: { "animeLists.reading": req.body.id } }
+      )
+        .then((userFromDB) => {
+          res.json(userFromDB);
+        })
+        .catch((err) => next(err));
+        break
+    case "plan to read":
+      User.findOneAndUpdate(
+        { userName },
+        { $push: { "animeLists.planToRead": req.body.id } }
+      )
+        .then((userFromDB) => {
+          res.json(userFromDB);
+        })
+        .catch((err) => next(err));
+  }
+});
 module.exports = router;
+
+
+router.put("/users/:userName/mangaremove", isAuthenticated, (req, res, next) => {
+  const userName = req.params.userName;
+  
+switch(req.body.case) {
+  case "favorites":
+    User.findOneAndUpdate({userName} , { $pull: {"mangaList.favorites": req.body.Id} }, {new:true} )
+    .then((response) => {
+      console.log(response)
+      res.json(response)
+        })
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    }
+      );
+    break
+  case "planToRead":
+    User.findOneAndUpdate({userName} , { $pull: {"mangaLists.planToRead": req.body.Id} }, {new:true} )
+    .then((response) => {
+      console.log(response)
+      res.json(response)
+        })
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    }
+      );
+    break
+  case "currentlyReading":
+    User.findOneAndUpdate({userName} , { $pull: {"mangaLists.reading": req.body.Id} }, {new:true} )
+    .then((response) => {
+      console.log(response)
+      res.json(response)
+        })
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    }
+      );
+    break
+  case "completed":
+    User.findOneAndUpdate({userName} , { $pull: {"mangaLists.completed": req.body.Id} }, {new:true} )
+    .then((response) => {
+      console.log(response)
+      res.json(response)
+        })
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    }
+      );
+      
+      default:
+      break;
+}
+  
+}
+)

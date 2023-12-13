@@ -105,12 +105,17 @@ Anime
     }]
 
 
+FIX SEARCH BAR/ FILTER
+RENDER MANGA AND ANIME LISTS WITH STATE VARIABLE (TERNARY OPERATOR)
+FIX MODEL PROPERTIES (REQUIRED)
+CLOUDINARY
 
-
-
-1. finish admin front and back done
-2. do auth front and back for reviews
-3. render only if it's admin FRONTEND
-4. EDIT / DELETE reviews
-5. manga lists
 CSS
+
+
+
+
+BONUSES
+PREVENT DEFAULT IN PROFILE PAGE
+RATING??? MOST LIKED???
+EDIT / DELETE reviews
