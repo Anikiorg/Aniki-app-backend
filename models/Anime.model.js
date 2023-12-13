@@ -40,7 +40,7 @@ const animeSchema = new Schema({
   ageRating: { type: String, default: "TBD" },
   reviews: [
     {
-      author: { type: Schema.Types.ObjectId, ref: "User" },
+      user: { type: Schema.Types.ObjectId, ref: "User" },
       content: { type: String, required: true },
     },
   ],
