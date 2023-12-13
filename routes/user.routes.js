@@ -11,23 +11,51 @@ router.get("/users", (req, res, next) => {
     .catch((err) => next(err));
 });
 
+
+router.get("/users/:userName", (req, res, next) => {
+  const userName = req.params.userName;
+  console.log(userName)
+  User.findOne({ userName })
+  .populate("animeLists.favorites")
+  .populate("animeLists.completed")
+  .populate("animeLists.watching")
+  .populate("animeLists.planToWatch")
+  .populate("mangaLists.favorites")
+  .populate("mangaLists.completed")
+  .populate("mangaLists.reading") 
+  .populate("mangaLists.planToRead")
+  
+  .then((response) => {
+      console.log(response)
+      res.json(response);
+    })
+    .catch((err) => {
+      return next(err);
+    });
+});
+
+
+
 router.put("/users/:userName/push", isAuthenticated, (req, res, next) => {
   const userName = req.params.userName;
 switch (req.body.listType) {
   case "favorites":
     User.findOneAndUpdate(
       { userName },
-      { $push: { favoritesList: req.body.id } }
+      { $push: {"animeLists.favorites": req.body.id } }
     )
       .then((userFromDB) => {
+        console.log('adding favoritee ', userFromDB)
         res.json(userFromDB);
       })
-      .catch((err) => next(err));
+      .catch((err) => {
+        console.log('error adding fav ', err)
+        next(err)});
     break
   case "completed":
     User.findOneAndUpdate(
       { userName },
-      { $push: { completedList: req.body.id } }
+      { $push: { "animeLists.completed": req.body.id } }
     )
       .then((userFromDB) => {
         res.json(userFromDB);
@@ -38,7 +66,7 @@ switch (req.body.listType) {
     case "currently watching":
       User.findOneAndUpdate(
         { userName },
-        { $push: { currentlyWatchingList: req.body.id } }
+        { $push: { "animeLists.currentlyWatching": req.body.id } }
       )
         .then((userFromDB) => {
           res.json(userFromDB);
@@ -48,7 +76,7 @@ switch (req.body.listType) {
     case "plan to watch":
       User.findOneAndUpdate(
         { userName },
-        { $push: { planToWatchList: req.body.id } }
+        { $push: { "animeLists.planToWatch": req.body.id } }
       )
         .then((userFromDB) => {
           res.json(userFromDB);
@@ -57,27 +85,13 @@ switch (req.body.listType) {
   }
 });
 
-router.get("/users/:userName", (req, res, next) => {
-  const userName = req.params.userName;
-  User.find({ userName })
-    .populate("favoritesList")
-    .populate("currentlyWatchingList")
-    .populate("completedList")
-    .populate("planToWatchList")
-    .then((response) => {
-      res.json(response);
-    })
-    .catch((err) => {
-      return next(err);
-    });
-});
 
 router.put("/users/:userName/pull", isAuthenticated, (req, res, next) => {
   const userName = req.params.userName;
   
 switch(req.body.case) {
   case "favorites":
-    User.findOneAndUpdate({userName} , { $pull: {favoritesList: req.body.animeId} }, {new:true} )
+    User.findOneAndUpdate({userName} , { $pull: {"animeLists.favorites": req.body.animeId} }, {new:true} )
     .then((response) => {
       console.log(response)
       res.json(response)
@@ -89,7 +103,7 @@ switch(req.body.case) {
       );
     break
   case "planToWatch":
-    User.findOneAndUpdate({userName} , { $pull: {planToWatchList: req.body.animeId} }, {new:true} )
+    User.findOneAndUpdate({userName} , { $pull: {"animeLists.planToWatch": req.body.animeId} }, {new:true} )
     .then((response) => {
       console.log(response)
       res.json(response)
@@ -101,7 +115,7 @@ switch(req.body.case) {
       );
     break
   case "currentlyWatching":
-    User.findOneAndUpdate({userName} , { $pull: {currentlyWatchingList: req.body.animeId} }, {new:true} )
+    User.findOneAndUpdate({userName} , { $pull: {"animeLists.watching": req.body.animeId} }, {new:true} )
     .then((response) => {
       console.log(response)
       res.json(response)
@@ -113,7 +127,7 @@ switch(req.body.case) {
       );
     break
   case "completed":
-    User.findOneAndUpdate({userName} , { $pull: {completedList: req.body.animeId} }, {new:true} )
+    User.findOneAndUpdate({userName} , { $pull: {"animeLists.completed": req.body.animeId} }, {new:true} )
     .then((response) => {
       console.log(response)
       res.json(response)
