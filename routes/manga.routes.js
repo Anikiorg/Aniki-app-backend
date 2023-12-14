@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const Manga = require("../models/Manga.model")
 const isAdmin = require ("../middleware/protected.resources")
+const { isAuthenticated } = require("../middleware/jwt.middleware")
 
 router.get("/manga", (req, res, next) => {
     Manga.find()
@@ -29,15 +30,28 @@ router.get("/manga/:mangaId", (req, res, next) => {
     .catch((err) => next(err))
 })
 
-router.put("/manga/:mangaId", isAdmin, (req, res, next) => {
-    const mangaId = req.params.mangaId
-    
-    Manga.findByIdAndUpdate(mangaId, req.body, {new: true})
+router.put("/manga/:mangaId", isAuthenticated, (req, res, next) => {
+    const mangaId = req.params.mangaId;
+    console.log("req.body -->", req.body.content);
+    console.log(req.payload);
+    if (req.body.content) {
+      console.log('after if')
+      Manga.findByIdAndUpdate(mangaId, {
+        $push: { reviews: {user: req.payload._id, content: req.body.content} }
+      }, {new:true})
+        .then((response) => {
+          console.log("Manga review added", response);
+          res.json()
+        })
+        .catch((err) => {
+          console.log('couldn update', err)});
+    }
+    Manga.findByIdAndUpdate(mangaId, req.body, { new: true })
     .then(() => {
-        res.json()
+      res.json();
     })
-    .catch((err) => next(err))
-})
+    .catch((err) => next(err));
+  });
 
 router.delete("/manga/:mangaId",isAdmin, (req, res, next) => {
     const mangaId = req.params.mangaId

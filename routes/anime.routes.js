@@ -24,6 +24,7 @@ router.get("/animes/:animeId", (req, res, next) => {
   const animeId = req.params.animeId;
 
   Anime.findById(animeId)
+    /* .populate("user") */
     .then((animeFromDB) => {
       res.json(animeFromDB);
     })
@@ -46,7 +47,11 @@ router.put("/animes/:animeId", isAuthenticated, (req, res, next) => {
       .catch((err) => {
         console.log('couldn update', err)});
   }
-
+  Anime.findByIdAndUpdate(animeId, req.body, { new: true })
+    .then(() => {
+      res.json();
+    })
+    .catch((err) => next(err));
 });
 
 router.delete("/animes/:animeId", isAdmin, (req, res, next) => {
