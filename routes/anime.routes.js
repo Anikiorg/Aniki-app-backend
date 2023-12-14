@@ -4,6 +4,8 @@ const Anime = require("../models/Anime.model");
 const isAdmin = require ("../middleware/protected.resources");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
+const fileUploader = require("../config/cloudinary.config");
+
 router.get("/animes", (req, res, next) => {
   Anime.find()
     .then((animeArr) => {
@@ -20,11 +22,36 @@ router.post("/animes", isAdmin, (req, res, next) => {
     .catch((err) => next(err));
 });
 
+
+
+
+
+
+// POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
+router.post("/upload", fileUploader.single("imageURL"), (req, res, next) => {
+  console.log("file is: ", req.file)
+ 
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+  
+  // Get the URL of the uploaded file and send it as a response.
+  // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
+  
+  res.json({ fileUrl: req.file.path });
+});
+
+
+
+
+
+// deep populate (.populate({path:"reviews", populate:{path:"user"}}))
 router.get("/animes/:animeId", (req, res, next) => {
   const animeId = req.params.animeId;
 
   Anime.findById(animeId)
-    /* .populate("user") */
+    .populate({path:"reviews", populate:{path:"user"}})
     .then((animeFromDB) => {
       res.json(animeFromDB);
     })
