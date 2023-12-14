@@ -40,7 +40,7 @@ const mangaSchema = new Schema({
   ageRating: { type: String, default: "TBD" },
   reviews: [
     {
-      user: { type: Schema.Types.ObjectId, ref: "User" },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       content: { type: String, required: true },
     },
   ],
