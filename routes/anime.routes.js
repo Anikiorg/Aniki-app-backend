@@ -62,8 +62,10 @@ router.put("/animes/:animeId", isAuthenticated, (req, res, next) => {
   const animeId = req.params.animeId;
   console.log("req.body -->", req.body.content);
   console.log(req.payload);
+
   if (req.body.content) {
     console.log('after if')
+    
     Anime.findByIdAndUpdate(animeId, {
       $push: { reviews: {user: req.payload._id, content: req.body.content} }
     }, {new:true})
