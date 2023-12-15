@@ -176,7 +176,7 @@ switch (req.body.listType) {
     case "currently reading":
       User.findOneAndUpdate(
         { userName },
-        { $push: { "animeLists.reading": req.body.id } }
+        { $push: { "mangaLists.reading": req.body.id } }
       )
         .then((userFromDB) => {
           res.json(userFromDB);
@@ -186,7 +186,7 @@ switch (req.body.listType) {
     case "plan to read":
       User.findOneAndUpdate(
         { userName },
-        { $push: { "animeLists.planToRead": req.body.id } }
+        { $push: { "mangaLists.planToRead": req.body.id } }
       )
         .then((userFromDB) => {
           res.json(userFromDB);
